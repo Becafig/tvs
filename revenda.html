@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Revenda IPTV - Rotas TV</title>
+    
+    <meta name="description" content="Seja um revendedor de sucesso com os painéis da Rotas TV. Planos completos com múltiplos servidores, suporte dedicado e a melhor lucratividade do mercado.">
+    <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/1040/1040333.png" type="image/png">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* ESTILOS GLOBAIS - OS MESMOS DO SITE PRINCIPAL */
+        :root {
+            --cor-primaria: #FFD700;
+            --cor-primaria-hover: #f0c808;
+            --cor-background: #101010;
+            --cor-surface: #1d1d1d;
+            --cor-texto-principal: #FFFFFF;
+            --cor-texto-secundario: #a0a0a0;
+            --font-principal: 'Poppins', sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: var(--font-principal);
+        }
+
+        html {
+            scroll-behavior: smooth;
+            font-size: 16px;
+        }
+
+        body {
+            background-color: var(--cor-background);
+            color: var(--cor-texto-principal);
+            overflow-x: hidden;
+        }
+
+        section {
+            padding: 80px 5%;
+            overflow: hidden;
+        }
+        
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            color: var(--cor-primaria);
+            text-align: center;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            color: var(--cor-texto-secundario);
+            margin-bottom: 60px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* CABEÇALHO E NAVEGAÇÃO */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 5%;
+            z-index: 1000;
+            transition: background-color 0.4s ease, padding 0.4s ease;
+            background-color: rgba(16, 16, 16, 0.8);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--cor-surface);
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--cor-primaria);
+            text-decoration: none;
+        }
+        
+        .nav-menu a {
+            color: var(--cor-texto-principal);
+            text-decoration: none;
+            margin-left: 30px;
+            font-weight: 500;
+            position: relative;
+            transition: color 0.3s ease;
+        }
+        .nav-menu a.active-link,
+        .nav-menu a:hover {
+            color: var(--cor-primaria);
+        }
+
+        .nav-menu a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -5px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: var(--cor-primaria);
+            transition: width 0.3s ease;
+        }
+        
+        .nav-menu a.active-link::after,
+        .nav-menu a:hover::after {
+            width: 100%;
+        }
+        
+        #menu-toggle {
+            display: none;
+            color: var(--cor-primaria);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* BOTÕES */
+        .cta-button {
+            background-color: var(--cor-primaria);
+            color: var(--cor-background);
+            padding: 15px 35px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+            display: inline-block;
+        }
+
+        .cta-button:hover {
+            background-color: var(--cor-primaria-hover);
+            transform: scale(1.05);
+        }
+        
+        /* SEÇÃO HERO */
+        #hero-revenda {
+            min-height: 60vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            position: relative;
+            background: linear-gradient(rgba(16, 16, 16, 0.8), rgba(16, 16, 16, 0.9)), url('https://images.unsplash.com/photo-1611156221013-1de3b5a86498?q=80&w=2070&auto=format&fit=crop') no-repeat center center/cover;
+            padding-top: 100px; /* Para não ficar atrás do header */
+        }
+
+        .hero-content h1 {
+            font-size: 4rem;
+            font-weight: 700;
+            line-height: 1.2;
+        }
+        
+        .hero-content h1 span {
+            color: var(--cor-primaria);
+        }
+
+        .hero-content p {
+            font-size: 1.2rem;
+            color: var(--cor-texto-secundario);
+            margin: 20px 0 0 0;
+        }
+
+        /* ESTILOS ESPECÍFICOS PARA OS CARDS DE REVENDA */
+        .reseller-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 30px;
+            align-items: stretch; /* Alinha a altura dos cards */
+        }
+
+        .reseller-card {
+            background-color: var(--cor-surface);
+            padding: 30px;
+            border-radius: 12px;
+            border: 1px solid transparent;
+            transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .reseller-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--cor-primaria);
+        }
+
+        .reseller-card.featured {
+            border-color: var(--cor-primaria);
+            box-shadow: 0 10px 40px rgba(255, 215, 0, 0.15);
+        }
+
+        .badge {
+            position: absolute;
+            top: 15px;
+            right: -45px;
+            background-color: var(--cor-primaria);
+            color: var(--cor-background);
+            padding: 5px 40px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transform: rotate(45deg);
+            text-align: center;
+        }
+
+        .reseller-card-title {
+            font-size: 1.5rem;
+            color: var(--cor-primaria);
+            text-align: center;
+            margin-bottom: 25px;
+            font-weight: 600;
+        }
+
+        .reseller-section {
+            margin-bottom: 25px;
+        }
+
+        .reseller-section h4 {
+            font-size: 1.1rem;
+            color: var(--cor-texto-principal);
+            margin-bottom: 15px;
+            border-bottom: 1px solid #333;
+            padding-bottom: 8px;
+        }
+
+        .reseller-section ul {
+            list-style: none;
+        }
+        
+        .reseller-section ul li {
+            color: var(--cor-texto-secundario);
+            margin-bottom: 8px;
+            line-height: 1.6;
+        }
+
+        .features-list li {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .features-list .fa-check-circle, .features-list .fa-gift {
+            color: var(--cor-primaria);
+        }
+
+        .reseller-card .cta-button {
+            margin-top: auto; /* Empurra o botão para o fim do card */
+            width: 100%;
+            text-align: center;
+        }
+
+        /* RODAPÉ E BOT FLUTUANTE */
+        footer {
+            background-color: var(--cor-background);
+            padding: 60px 5% 20px;
+            border-top: 1px solid var(--cor-surface);
+            text-align: center;
+        }
+
+        .footer-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        
+        .footer-logo {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--cor-primaria);
+            text-decoration: none;
+        }
+        
+        .footer-contact p {
+            margin-bottom: 10px;
+            color: var(--cor-texto-secundario);
+        }
+
+        .footer-contact a {
+            color: var(--cor-texto-principal);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        .footer-contact a:hover {
+            color: var(--cor-primaria);
+        }
+
+        .social-icons a {
+            color: var(--cor-texto-principal);
+            font-size: 1.5rem;
+            margin: 0 15px;
+            transition: color 0.3s ease, transform 0.3s ease;
+        }
+        
+        .social-icons a:hover {
+            color: var(--cor-primaria);
+            transform: translateY(-5px);
+        }
+
+        .copyright {
+            color: var(--cor-texto-secundario);
+            font-size: 0.9rem;
+            padding-top: 20px;
+            border-top: 1px solid var(--cor-surface);
+        }
+
+        /* RESPONSIVIDADE */
+        @media (max-width: 767px) {
+            .nav-menu {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background-color: rgba(29, 29, 29, 0.95);
+                backdrop-filter: blur(10px);
+                flex-direction: column;
+                text-align: center;
+                padding: 20px 0;
+            }
+            
+            .nav-menu.active {
+                display: flex;
+            }
+
+            .nav-menu a {
+                margin: 15px 0;
+                font-size: 1.2rem;
+            }
+            
+            #menu-toggle {
+                display: block;
+            }
+
+            .hero-content h1 {
+                font-size: 3rem;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header id="header">
+        <a href="index.html" class="logo">Rotas TV</a>
+        <nav class="nav-menu" id="nav-menu">
+            <a href="index.html">Início</a>
+            <a href="#revenda">Planos</a>
+            <a href="index.html#contato">Contato</a>
+        </nav>
+        <i class="fas fa-bars" id="menu-toggle"></i>
+    </header>
+
+    <main>
+        <section id="hero-revenda">
+            <div class="hero-content fade-in">
+                <h1>Seja um Revendedor <span>de Sucesso</span></h1>
+                <p>Tenha seu próprio negócio de IPTV com painéis completos, múltiplos servidores e o melhor suporte do mercado.</p>
+            </div>
+        </section>
+
+        <section id="revenda">
+            <div class="container">
+                <h2 class="section-title">Planos de Revenda</h2>
+                <p class="section-subtitle">Escolha o plano ideal para começar a lucrar. Todos os planos contam com nosso suporte exclusivo e créditos que nunca expiram.</p>
+                
+                <div class="reseller-grid">
+                    
+                    <!-- Card Plano Ultra Básico -->
+                    <div class="reseller-card fade-in">
+                        <h3 class="reseller-card-title">REVENDA ULTRA BÁSICO</h3>
+                        <div class="reseller-section">
+                            <h4><i class="fas fa-server"></i> Servidores</h4>
+                            <ul>
+                                <li>ATIVA BOX, DUO, GRTV, LITE PLAY, ONETV, VTVBR, ZPLAY</li>
+                            </ul>
+                        </div>
+                        <div class="reseller-section">
+                            <h4><i class="fas fa-dollar-sign"></i> Tabela de Preços</h4>
+                            <ul>
+                                <li><strong>1 Crédito:</strong> R$ 4,00</li>
+                                <li><strong>5 Créditos:</strong> R$ 15,00</li>
+                                <li><strong>10 Créditos:</strong> R$ 30,00</li>
+                                <li><strong>50 Créditos:</strong> R$ 80,00</li>
+                                <li><strong>100 Créditos:</strong> R$ 120,00</li>
+                            </ul>
+                        </div>
+                        <div class="reseller-section">
+                            <h4><i class="fas fa-star"></i> Vantagens</h4>
+                            <ul class="features-list">
+                                <li><i class="fas fa-check-circle"></i> 7 servidores no mesmo painel</li>
+                                <li><i class="fas fa-check-circle"></i> Créditos não expiram</li>
+                                <li><i class="fas fa-check-circle"></i> Suporte direto com o dono</li>
+                                <li><i class="fas fa-check-circle"></i> Acesso a grupos e canais</li>
+                            </ul>
+                        </div>
+                        <a href="https://wa.me/5522999604359" target="_blank" class="cta-button">Ser Revendedor</a>
+                    </div>
+                    
+                    <!-- Card Plano Básico (Destaque) -->
+                    <div class="reseller-card featured fade-in">
+                        <div class="badge">Popular</div>
+                        <h3 class="reseller-card-title">REVENDA BÁSICO</h3>
+                        <div class="reseller-section">
+                            <h4><i class="fas fa-server"></i> Servidores</h4>
+                            <ul>
+                                <li>NEWP2, DUO, AUDSERV, ATIVA BOX, NETTURBO, BLESSED, VTV BR, LITE PLAY, P2P BINSTREAM</li>
+                            </ul>
+                        </div>
+                        <div class="reseller-section">
+                            <h4><i class="fas fa-dollar-sign"></i> Tabela de Preços</h4>
+                            <ul>
+                                <li><strong>1 Crédito:</strong> R$ 5,00</li>
+                                <li><strong>5 Créditos:</strong> R$ 22,50</li>
+                                <li><strong>10 Créditos:</strong> R$ 40,00</li>
+                                <li><strong>50 Créditos:</strong> R$ 150,00</li>
+                                <li><strong>100 Créditos:</strong> R$ 200,00</li>
+                            </ul>
+                        </div>
+                        <div class="reseller-section">
+                            <h4><i class="fas fa-star"></i> Vantagens</h4>
+                            <ul class="features-list">
+                                <li><i class="fas fa-check-circle"></i> 9 servidores (IPTV e P2P)</li>
+                                <li><i class="fas fa-check-circle"></i> Créditos não expiram</li>
+                                <li><i class="fas fa-check-circle"></i> Suporte direto com o dono</li>
+                                <li><i class="fas fa-check-circle"></i> Acesso a grupos e canais</li>
+                            </ul>
+                        </div>
+                        <a href="https://wa.me/5522999604359" target="_blank" class="cta-button">Ser Revendedor</a>
+                    </div>
+
+                    <!-- Card Plano Intermediário -->
+                    <div class="reseller-card fade-in">
+                        <h3 class="reseller-card-title">REVENDA INTERMEDIÁRIO</h3>
+                        <div class="reseller-section">
+                            <h4><i class="fas fa-server"></i> Servidores</h4>
+                            <ul>
+                                <li>MEGGA, CARACOL, DUO, NewP2, AUDSERV, ATIVA BOX, e mais 6 servidores!</li>
+                            </ul>
+                        </div>
+                        <div class="reseller-section">
+                            <h4><i class="fas fa-dollar-sign"></i> Tabela de Preços</h4>
+                            <ul>
+                                <li><strong>1 Crédito:</strong> R$ 9,00</li>
+                                <li><strong>5 Créditos:</strong> R$ 40,00</li>
+                                <li><strong>10 Créditos:</strong> R$ 60,00</li>
+                                <li><strong>50 Créditos:</strong> R$ 200,00</li>
+                                <li><strong>100 Créditos:</strong> R$ 300,00</li>
+                            </ul>
+                        </div>
+                        <div class="reseller-section">
+                            <h4><i class="fas fa-star"></i> Vantagens</h4>
+                            <ul class="features-list">
+                                <li><i class="fas fa-check-circle"></i> 12 servidores (IPTV e P2P)</li>
+                                <li><i class="fas fa-check-circle"></i> Créditos não expiram</li>
+                                <li><i class="fas fa-check-circle"></i> Suporte direto com o dono</li>
+                                <li><i class="fas fa-check-circle"></i> Acesso a grupos e canais</li>
+                            </ul>
+                        </div>
+                        <a href="https://wa.me/5522999604359" target="_blank" class="cta-button">Ser Revendedor</a>
+                    </div>
+                    
+                    <!-- Card Plano TOP -->
+                    <div class="reseller-card fade-in">
+                        <h3 class="reseller-card-title">REVENDA TOP</h3>
+                        <div class="reseller-section">
+                            <h4><i class="fas fa-server"></i> Servidores</h4>
+                            <ul>
+                                <li>MEGGA, ORION, NewP2, DUO, ZPLAY, CARACOL, e mais 11 servidores!</li>
+                            </ul>
+                        </div>
+                        <div class="reseller-section">
+                            <h4><i class="fas fa-dollar-sign"></i> Tabela de Preços</h4>
+                            <ul>
+                                <li><strong>1 Crédito:</strong> R$ 15,00</li>
+                                <li><strong>5 Créditos:</strong> R$ 50,00</li>
+                                <li><strong>10 Créditos:</strong> R$ 70,00</li>
+                                <li><strong>50 Créditos:</strong> R$ 250,00</li>
+                                <li><strong>100 Créditos:</strong> R$ 400,00</li>
+                            </ul>
+                        </div>
+                        <div class="reseller-section">
+                            <h4><i class="fas fa-star"></i> Vantagens</h4>
+                            <ul class="features-list">
+                                <li><i class="fas fa-check-circle"></i> 17 servidores (IPTV e P2P)</li>
+                                <li><i class="fas fa-check-circle"></i> Créditos não expiram</li>
+                                <li><i class="fas fa-check-circle"></i> Suporte direto com o dono</li>
+                                <li><i class="fas fa-check-circle"></i> Acesso a grupos e canais</li>
+                                <li><i class="fas fa-gift"></i> APP MAX GRÁTIS (Samsung e LG)</li>
+                            </ul>
+                        </div>
+                        <a href="https://wa.me/5522999604359" target="_blank" class="cta-button">Ser Revendedor</a>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+    </main>
+    
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <a href="#" class="footer-logo">Rotas TV</a>
+                <div class="footer-contact">
+                    <p><i class="fab fa-whatsapp"></i> <a href="https://wa.me/5522999604359" target="_blank">Atendimento Revenda: (22) 99960-4359</a></p>
+                    <p><i class="fas fa-envelope"></i> <a href="mailto:contato.revenda@rotastv.top">E-mail Revenda: contato@rotastv.top</a></p>
+                </div>
+                <div class="social-icons">
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-telegram-plane"></i></a>
+                </div>
+            </div>
+            <div class="copyright">
+                &copy; 2025 Rotas TV. Todos os direitos reservados.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+    // SCRIPT EXISTENTE DO SITE PRINCIPAL
+    document.addEventListener('DOMContentLoaded', function() {
+        const menuToggle = document.getElementById('menu-toggle');
+        const navMenu = document.getElementById('nav-menu');
+
+        if (menuToggle) {
+            menuToggle.addEventListener('click', () => {
+                navMenu.classList.toggle('active');
+                if (navMenu.classList.contains('active')) {
+                    menuToggle.classList.remove('fa-bars');
+                    menuToggle.classList.add('fa-times');
+                } else {
+                    menuToggle.classList.remove('fa-times');
+                    menuToggle.classList.add('fa-bars');
+                }
+            });
+        }
+        
+        document.querySelectorAll('.nav-menu a').forEach(link => {
+            link.addEventListener('click', () => {
+                if(navMenu.classList.contains('active')){
+                    navMenu.classList.remove('active');
+                    menuToggle.classList.remove('fa-times');
+                    menuToggle.classList.add('fa-bars');
+                }
+            });
+        });
+
+        const faders = document.querySelectorAll('.fade-in');
+        const appearOptions = {
+            threshold: 0.1,
+            rootMargin: "0px 0px -50px 0px"
+        };
+        const appearOnScroll = new IntersectionObserver(function(entries, appearOnScroll) {
+            entries.forEach(entry => {
+                if (!entry.isIntersecting) return;
+                entry.target.classList.add('visible');
+                appearOnScroll.unobserve(entry.target);
+            });
+        }, appearOptions);
+
+        faders.forEach(fader => {
+            appearOnScroll.observe(fader);
+        });
+    });
+    </script>
+
+</body>
+</html>
