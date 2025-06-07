@@ -1,0 +1,1148 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rotas TV - Assista sem limites</title>
+    
+    <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/1040/1040333.png" type="image/png">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        /*------------------------------------*\
+          #RESET & VARIÁVEIS GLOBAIS
+        \*------------------------------------*/
+        :root {
+            --cor-primaria: #FFD700; /* Amarelo Vibrante */
+            --cor-primaria-hover: #f0c808;
+            --cor-background: #101010;
+            --cor-surface: #1d1d1d;
+            --cor-texto-principal: #FFFFFF;
+            --cor-texto-secundario: #a0a0a0;
+            --font-principal: 'Poppins', sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: var(--font-principal);
+        }
+
+        html {
+            scroll-behavior: smooth;
+            font-size: 16px;
+        }
+
+        body {
+            background-color: var(--cor-background);
+            color: var(--cor-texto-principal);
+            overflow-x: hidden;
+        }
+
+        section {
+            padding: 80px 5%;
+            overflow: hidden;
+        }
+        
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            color: var(--cor-primaria);
+            text-align: center;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            color: var(--cor-texto-secundario);
+            margin-bottom: 60px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        /* Animações de Fade-in ao Rolar */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /*------------------------------------*\
+          #CABEÇALHO E NAVEGAÇÃO
+        \*------------------------------------*/
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 5%;
+            z-index: 1000;
+            transition: background-color 0.4s ease, padding 0.4s ease;
+        }
+
+        header.scrolled {
+            background-color: rgba(16, 16, 16, 0.8);
+            backdrop-filter: blur(10px);
+            padding: 15px 5%;
+            border-bottom: 1px solid var(--cor-surface);
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--cor-primaria);
+            text-decoration: none;
+        }
+        
+        .logo i {
+            margin-right: 8px;
+        }
+
+        .nav-menu a {
+            color: var(--cor-texto-principal);
+            text-decoration: none;
+            margin-left: 30px;
+            font-weight: 500;
+            position: relative;
+            transition: color 0.3s ease;
+        }
+
+        .nav-menu a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -5px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: var(--cor-primaria);
+            transition: width 0.3s ease;
+        }
+        
+        .nav-menu a:hover {
+            color: var(--cor-primaria);
+        }
+
+        .nav-menu a:hover::after {
+            width: 100%;
+        }
+        
+        #menu-toggle {
+            display: none;
+            color: var(--cor-primaria);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /*------------------------------------*\
+          #SEÇÃO HERO
+        \*------------------------------------*/
+        #hero {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            position: relative;
+            background: linear-gradient(rgba(16, 16, 16, 0.8), rgba(16, 16, 16, 1)), url('https://images.unsplash.com/photo-1574375927938-d5a98e8ffe85?q=80&w=2070&auto=format&fit=crop') no-repeat center center/cover;
+        }
+
+        .hero-content {
+            max-width: 800px;
+        }
+
+        .hero-content h1 {
+            font-size: 4rem;
+            font-weight: 700;
+            color: var(--cor-texto-principal);
+            line-height: 1.2;
+        }
+        
+        .hero-content h1 span {
+            color: var(--cor-primaria);
+        }
+
+        .hero-content p {
+            font-size: 1.2rem;
+            color: var(--cor-texto-secundario);
+            margin: 20px 0 40px 0;
+        }
+
+        .cta-button {
+            background-color: var(--cor-primaria);
+            color: var(--cor-background);
+            padding: 15px 35px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+            display: inline-block;
+        }
+
+        .cta-button:hover {
+            background-color: var(--cor-primaria-hover);
+            transform: scale(1.05);
+        }
+        
+        /*------------------------------------*\
+          #SEÇÃO VANTAGENS
+        \*------------------------------------*/
+        .vantagens-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 40px;
+        }
+
+        .vantagem-card {
+            background-color: var(--cor-surface);
+            padding: 30px;
+            border-radius: 12px;
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .vantagem-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(255, 215, 0, 0.1);
+        }
+
+        .vantagem-card .icon {
+            font-size: 3rem;
+            color: var(--cor-primaria);
+            margin-bottom: 20px;
+        }
+
+        .vantagem-card h3 {
+            font-size: 1.3rem;
+            color: var(--cor-texto-principal);
+            margin-bottom: 10px;
+        }
+
+        .vantagem-card p {
+            color: var(--cor-texto-secundario);
+            line-height: 1.6;
+        }
+
+        /*------------------------------------*\
+          #SEÇÃO COMPARATIVO
+        \*------------------------------------*/
+        .comparativo-table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: var(--cor-surface);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .comparativo-table th, .comparativo-table td {
+            padding: 20px;
+            text-align: center;
+            border-bottom: 1px solid var(--cor-background);
+        }
+
+        .comparativo-table th {
+            background-color: var(--cor-primaria);
+            color: var(--cor-background);
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+        
+        .comparativo-table tr.rotas-tv td {
+            background-color: #333;
+        }
+
+        .comparativo-table .provider-logo {
+            font-weight: 700;
+            font-size: 1.4rem;
+        }
+
+        .comparativo-table .rotas-tv .provider-logo {
+            color: var(--cor-primaria);
+        }
+
+        .comparativo-table .price {
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+
+        .comparativo-table .price span {
+            font-size: 1rem;
+            font-weight: 400;
+            color: var(--cor-texto-secundario);
+        }
+        
+        .comparativo-table .rotas-tv .price {
+            color: var(--cor-primaria);
+        }
+
+        .comparativo-table .check {
+            color: #28a745;
+            font-size: 1.5rem;
+        }
+        
+        .comparativo-table .times {
+            color: #dc3545;
+            font-size: 1.5rem;
+        }
+
+        .comparativo-table .feature-title {
+            text-align: left;
+            font-weight: 500;
+            color: var(--cor-texto-secundario);
+        }
+        
+        /*------------------------------------*\
+          #SEÇÃO DEPOIMENTOS
+        \*------------------------------------*/
+        .depoimentos-carousel {
+            position: relative;
+            max-width: 800px;
+            margin: 0 auto;
+            overflow: hidden;
+        }
+        
+        .carousel-track {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+        }
+
+        .depoimento-card {
+            background-color: var(--cor-surface);
+            padding: 40px;
+            border-radius: 12px;
+            min-width: 100%;
+            box-sizing: border-box;
+            text-align: center;
+        }
+
+        .depoimento-card img {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            border: 3px solid var(--cor-primaria);
+            margin-bottom: 20px;
+        }
+
+        .depoimento-card .depoimento-texto {
+            font-style: italic;
+            color: var(--cor-texto-secundario);
+            margin-bottom: 20px;
+            line-height: 1.7;
+        }
+
+        .depoimento-card .depoimento-nome {
+            font-weight: 600;
+            color: var(--cor-texto-principal);
+            font-size: 1.1rem;
+        }
+        
+        .carousel-dots {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .dot {
+            cursor: pointer;
+            height: 12px;
+            width: 12px;
+            margin: 0 5px;
+            background-color: var(--cor-surface);
+            border-radius: 50%;
+            display: inline-block;
+            transition: background-color 0.3s ease;
+            border: 2px solid var(--cor-primaria);
+        }
+
+        .dot.active {
+            background-color: var(--cor-primaria);
+        }
+        
+        /*------------------------------------*\
+          #SEÇÃO TESTE GRÁTIS E ÁREA DO ASSINANTE
+        \*------------------------------------*/
+        .cta-section {
+            text-align: center;
+            background-color: var(--cor-surface);
+        }
+
+        .cta-section h2 {
+            font-size: 2.2rem;
+            color: var(--cor-primaria);
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+        
+        .cta-section p {
+            color: var(--cor-texto-secundario);
+            margin-bottom: 30px;
+        }
+        
+        .button-group {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .secondary-button {
+            background-color: transparent;
+            color: var(--cor-primaria);
+            padding: 14px 34px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            border: 2px solid var(--cor-primaria);
+            transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease;
+        }
+        
+        .secondary-button:hover {
+            background-color: var(--cor-primaria);
+            color: var(--cor-background);
+            transform: scale(1.05);
+        }
+        
+        /*------------------------------------*\
+          #RODAPÉ
+        \*------------------------------------*/
+        footer {
+            background-color: var(--cor-background);
+            padding: 60px 5% 20px;
+            border-top: 1px solid var(--cor-surface);
+            text-align: center;
+        }
+
+        .footer-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        
+        .footer-logo {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--cor-primaria);
+            text-decoration: none;
+        }
+        
+        .footer-logo i {
+            margin-right: 10px;
+        }
+        
+        .footer-contact p {
+            margin-bottom: 10px;
+            color: var(--cor-texto-secundario);
+        }
+
+        .footer-contact a {
+            color: var(--cor-texto-principal);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        .footer-contact a:hover {
+            color: var(--cor-primaria);
+        }
+
+        .social-icons a {
+            color: var(--cor-texto-principal);
+            font-size: 1.5rem;
+            margin: 0 15px;
+            transition: color 0.3s ease, transform 0.3s ease;
+        }
+        
+        .social-icons a:hover {
+            color: var(--cor-primaria);
+            transform: translateY(-5px);
+        }
+
+        .copyright {
+            color: var(--cor-texto-secundario);
+            font-size: 0.9rem;
+            padding-top: 20px;
+            border-top: 1px solid var(--cor-surface);
+        }
+
+        /*------------------------------------*\
+          #BOT FLUTUANTE "BOT RÔ"
+        \*------------------------------------*/
+        #bot-ro-container {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 1001;
+        }
+
+        #bot-ro-icon {
+            width: 60px;
+            height: 60px;
+            background-color: var(--cor-primaria);
+            color: var(--cor-background);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 2rem;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(255, 215, 0, 0.3);
+            transition: transform 0.3s ease, background-color 0.3s ease;
+        }
+        
+        #bot-ro-icon:hover {
+            transform: scale(1.1);
+            background-color: var(--cor-primaria-hover);
+        }
+
+        #bot-ro-chat-window {
+            position: absolute;
+            bottom: 80px;
+            right: 0;
+            width: 320px;
+            background-color: var(--cor-surface);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            overflow: hidden;
+            opacity: 0;
+            transform: translateY(20px);
+            visibility: hidden;
+            transition: opacity 0.4s ease, transform 0.4s ease, visibility 0.4s;
+        }
+        
+        #bot-ro-chat-window.open {
+            opacity: 1;
+            transform: translateY(0);
+            visibility: visible;
+        }
+        
+        .chat-header {
+            background-color: var(--cor-primaria);
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .chat-header .avatar {
+            width: 40px;
+            height: 40px;
+            background-color: var(--cor-background);
+            color: var(--cor-primaria);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+        
+        .chat-header .info h4 {
+            color: var(--cor-background);
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+        
+        .chat-header .info p {
+            color: rgba(16, 16, 16, 0.7);
+            font-size: 0.8rem;
+        }
+
+        .chat-messages {
+            padding: 20px;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        
+        .message {
+            display: flex;
+            margin-bottom: 15px;
+        }
+        
+        .message.bot .text {
+            background-color: #333;
+            color: var(--cor-texto-principal);
+            border-radius: 15px 15px 15px 0;
+            padding: 12px;
+            max-width: 80%;
+            line-height: 1.5;
+            font-size: 0.95rem;
+            animation: slideUp 0.5s ease-out;
+        }
+
+        .chat-options {
+            padding: 0 20px 20px 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .chat-option-btn {
+            background-color: transparent;
+            border: 2px solid var(--cor-primaria);
+            color: var(--cor-primaria);
+            padding: 12px;
+            border-radius: 25px;
+            cursor: pointer;
+            text-align: center;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            opacity: 0;
+            animation: slideUp 0.5s ease-out forwards;
+        }
+        
+        .chat-option-btn:hover {
+            background-color: var(--cor-primaria);
+            color: var(--cor-background);
+        }
+        
+        .chat-option-btn:nth-child(1) { animation-delay: 0.5s; }
+        .chat-option-btn:nth-child(2) { animation-delay: 0.7s; }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+
+        /*------------------------------------*\
+          #RESPONSIVIDADE (Mobile First)
+        \*------------------------------------*/
+        
+        /* Estilos para Tablet (768px ou mais) */
+        @media (min-width: 768px) {
+            #menu-toggle {
+                display: none;
+            }
+
+            .nav-menu {
+                display: flex !important;
+            }
+
+            .hero-content h1 {
+                font-size: 5rem;
+            }
+            
+            .comparativo-table {
+                font-size: 1rem;
+            }
+        }
+        
+        /* Estilos para Desktop (1024px ou mais) */
+        @media (min-width: 1024px) {
+            .vantagens-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+
+            .hero-content h1 {
+                font-size: 6rem;
+            }
+        }
+
+        /* Estilos Mobile (Até 767px) */
+        @media (max-width: 767px) {
+            .nav-menu {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background-color: rgba(29, 29, 29, 0.95);
+                backdrop-filter: blur(10px);
+                flex-direction: column;
+                text-align: center;
+                padding: 20px 0;
+            }
+            
+            .nav-menu.active {
+                display: flex;
+            }
+
+            .nav-menu a {
+                margin: 15px 0;
+                font-size: 1.2rem;
+            }
+            
+            #menu-toggle {
+                display: block;
+            }
+
+            .hero-content h1 {
+                font-size: 3rem;
+            }
+
+            .hero-content p {
+                font-size: 1.1rem;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+            
+            .comparativo-table {
+                font-size: 0.8rem;
+            }
+            .comparativo-table th, .comparativo-table td {
+                padding: 10px 5px;
+            }
+            .comparativo-table .price {
+                font-size: 1.2rem;
+            }
+            .provider-logo {
+                font-size: 1rem;
+            }
+            
+            #bot-ro-chat-window {
+                width: calc(100vw - 40px);
+                right: -10px;
+                bottom: 80px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header id="header">
+        <a href="#" class="logo"><i></i> Rotas TV</a>
+        <nav class="nav-menu" id="nav-menu">
+            <a href="#hero">Início</a>
+            <a href="#vantagens">Vantagens</a>
+            <a href="#comparativo">Compare</a>
+            <a href="#depoimentos">Depoimentos</a>
+            <a href="#revenda">Revenda</a>
+            <a href="#contato">Contato</a>
+        </nav>
+        <i class="fas fa-bars" id="menu-toggle"></i>
+    </header>
+
+    <main>
+        <section id="hero">
+            <div class="hero-content fade-in">
+                <h1>Assista sem <span>limites</span></h1>
+                <p>O melhor do entretenimento, com estabilidade e qualidade que só a Rotas TV oferece. Mais de 2.000 canais e 40.000 títulos on demand na sua casa.</p>
+                <a href="#comparativo" class="cta-button">Assinar agora</a>
+            </div>
+        </section>
+
+        <section id="vantagens">
+            <div class="container">
+                <h2 class="section-title">Vantagens Rotas TV</h2>
+                <p class="section-subtitle">Descubra por que mais de 200 clientes escolheram a nossa estabilidade e exclusividade para transformar sua forma de assistir TV.</p>
+                
+                <div class="vantagens-grid">
+                    <div class="vantagem-card fade-in">
+                        <div class="icon"><i class="fas fa-gem"></i></div>
+                        <h3>Canais Premium</h3>
+                        <p>Filmes, esportes, BBB, A Fazenda e os canais mais desejados, tudo em um só lugar.</p>
+                    </div>
+                    <div class="vantagem-card fade-in">
+                        <div class="icon"><i class="fas fa-mobile-alt"></i></div>
+                        <h3>App Próprio</h3>
+                        <p>Navegue com facilidade em nossa interface intuitiva, disponível para qualquer dispositivo.</p>
+                    </div>
+                    <div class="vantagem-card fade-in">
+                        <div class="icon"><i class="fab fa-whatsapp"></i></div>
+                        <h3>Suporte Rápido</h3>
+                        <p>Nosso time está pronto para te atender de forma imediata via WhatsApp.</p>
+                    </div>
+                    <div class="vantagem-card fade-in">
+                        <div class="icon"><i class="fas fa-users"></i></div>
+                        <h3>+200 Clientes Satisfeitos</h3>
+                        <p>Aprovação comprovada por feedbacks reais e uma comunidade crescente.</p>
+                    </div>
+                    <div class="vantagem-card fade-in">
+                        <div class="icon"><i class="fas fa-shield-alt"></i></div>
+                        <h3>DNS Próprio</h3>
+                        <p>Desfrute de uma conexão estável e segura, com zero travamentos e alta velocidade.</p>
+                    </div>
+                    <div class="vantagem-card fade-in">
+                        <div class="icon"><i class="fas fa-magic"></i></div>
+                        <h3>Instalação Simples</h3>
+                        <p>Sem técnicos ou complicações. Comece a assistir em poucos minutos.</p>
+                    </div>
+                    <div class="vantagem-card fade-in">
+                        <div class="icon"><i class="fas fa-tv"></i></div>
+                        <h3>Multi-dispositivo</h3>
+                        <p>Assista na sua Smart TV, celular, tablet ou TV Box, onde e quando quiser.</p>
+                    </div>
+                    <div class="vantagem-card fade-in">
+                        <div class="icon"><i class="fas fa-broadcast-tower"></i></div>
+                        <h3>Alta Qualidade</h3>
+                        <p>Imagem e som de cinema com canais em Full HD e 4K disponíveis.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="comparativo">
+            <div class="container">
+                <h2 class="section-title">Chega de pagar caro</h2>
+                <p class="section-subtitle">Veja como a Rotas TV supera a TV a cabo tradicional em preço, conteúdo e praticidade. A escolha inteligente para seu entretenimento.</p>
+                
+                <div class="comparativo-table-wrapper fade-in">
+                    <table class="comparativo-table">
+                        <thead>
+                            <tr>
+                                <th>Recurso</th>
+                                <th class="provider-logo">Sky</th>
+                                <th class="provider-logo">Claro TV</th>
+                                <th class="provider-logo rotas-tv">Rotas TV</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="feature-title">Preço Mensal (Média)</td>
+                                <td class="price">R$ 189,90</td>
+                                <td class="price">R$ 199,90</td>
+                                <td class="price rotas-tv">R$ 29,90</td>
+                            </tr>
+                             <tr>
+                                <td class="feature-title">+2.000 Canais Ao Vivo</td>
+                                <td><i class="fas fa-times times"></i></td>
+                                <td><i class="fas fa-times times"></i></td>
+                                <td><i class="fas fa-check check"></i></td>
+                            </tr>
+                            <tr>
+                                <td class="feature-title">+40.000 Filmes e Séries</td>
+                                <td><i class="fas fa-times times"></i></td>
+                                <td><i class="fas fa-times times"></i></td>
+                                <td><i class="fas fa-check check"></i></td>
+                            </tr>
+                            <tr>
+                                <td class="feature-title">Canais Esportivos Exclusivos</td>
+                                <td>Parcial</td>
+                                <td>Parcial</td>
+                                <td><i class="fas fa-check check"></i></td>
+                            </tr>
+                            <tr>
+                                <td class="feature-title">Instalação sem técnico</td>
+                                <td><i class="fas fa-times times"></i></td>
+                                <td><i class="fas fa-times times"></i></td>
+                                <td><i class="fas fa-check check"></i></td>
+                            </tr>
+                            <tr>
+                                <td class="feature-title">Sem fidelidade</td>
+                                <td><i class="fas fa-times times"></i></td>
+                                <td><i class="fas fa-times times"></i></td>
+                                <td><i class="fas fa-check check"></i></td>
+                            </tr>
+                            <tr>
+                                <td class="feature-title">Assista em qualquer lugar</td>
+                                <td>Limitado</td>
+                                <td>Limitado</td>
+                                <td><i class="fas fa-check check"></i></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+        
+        <section id="depoimentos">
+            <div class="container">
+                <h2 class="section-title">Nossos clientes amam</h2>
+                <p class="section-subtitle">Histórias reais de quem trocou o convencional pela liberdade e qualidade da Rotas TV. A satisfação deles é o nosso maior canal.</p>
+                
+                <div class="depoimentos-carousel fade-in">
+                    <div class="carousel-track">
+                        <div class="depoimento-card">
+                            <img src="https://i.pravatar.cc/150?img=11" alt="Avatar Cliente 1">
+                            <p class="depoimento-texto">"Finalmente um serviço que não trava na hora do jogo! A qualidade da imagem é incrível e o suporte me ajudou na instalação em 5 minutos. Recomendo demais!"</p>
+                            <h4 class="depoimento-nome">Carlos Almeida</h4>
+                        </div>
+                        <div class="depoimento-card">
+                            <img src="https://i.pravatar.cc/150?img=32" alt="Avatar Cliente 2">
+                            <p class="depoimento-texto">"Cancelei minha TV a cabo e não me arrependo. A quantidade de filmes e séries é absurda, tem tudo que eu e minha família gostamos. Vale cada centavo!"</p>
+                            <h4 class="depoimento-nome">Mariana Costa</h4>
+                        </div>
+                         <div class="depoimento-card">
+                            <img src="https://i.pravatar.cc/150?img=68" alt="Avatar Cliente 3">
+                            <p class="depoimento-texto">"O aplicativo próprio é muito fácil de usar na minha Smart TV. Adoro ter acesso ao BBB e A Fazenda ao vivo sem pagar a mais por isso. Empresa séria e serviço de ponta."</p>
+                            <h4 class="depoimento-nome">João Pereira</h4>
+                        </div>
+                    </div>
+                </div>
+                <div class="carousel-dots"></div>
+            </div>
+        </section>
+        
+        <section class="cta-section" id="contato">
+            <div class="container fade-in">
+                <h2>Pronto para a revolução?</h2>
+                <p>Experimente a liberdade de assistir o que quiser, quando quiser.</p>
+                <div class="button-group">
+                    <a href="https://wa.me/5522999604359" target="_blank" class="cta-button">
+                        <i class="fab fa-whatsapp"></i> Teste Grátis por 24h
+                    </a>
+                    
+                    <a href="#link-area-assinante" class="secondary-button">
+                        <i class="fas fa-user-circle"></i> Área do Assinante
+                    </a>
+                </div>
+            </div>
+        </section>
+
+    </main>
+    
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <a href="#" class="footer-logo"><i></i> Rotas TV</a>
+                <div class="footer-contact">
+                    <p><i class="fab fa-whatsapp"></i> <a href="https://wa.me/5522999604359" target="_blank">Atendimento: (22) 99960-4359</a></p>
+                    <p><i class="fas fa-envelope"></i> <a href="mailto:contato@rotastv.com">E-mail: contato@rotastv.top</a></p>
+                </div>
+                <div class="social-icons">
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-telegram-plane"></i></a>
+                </div>
+            </div>
+            <div class="copyright">
+                &copy; 2025 Rotas TV. Todos os direitos reservados.
+            </div>
+        </div>
+    </footer>
+
+    <div id="bot-ro-container">
+        <div id="bot-ro-icon">
+            <i class="fas fa-robot"></i>
+        </div>
+        <div id="bot-ro-chat-window">
+            <div class="chat-header">
+                <div class="avatar"><i class="fas fa-robot"></i></div>
+                <div class="info">
+                    <h4>Bot Rô</h4>
+                    <p>Assistente Virtual Rotas TV</p>
+                </div>
+            </div>
+            <div class="chat-messages" id="chat-messages">
+                </div>
+            <div class="chat-options" id="chat-options">
+                </div>
+        </div>
+    </div>
+
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+
+        // ======================= //
+        // LÓGICA DO MENU MOBILE   //
+        // ======================= //
+        const menuToggle = document.getElementById('menu-toggle');
+        const navMenu = document.getElementById('nav-menu');
+
+        if (menuToggle) {
+            menuToggle.addEventListener('click', () => {
+                navMenu.classList.toggle('active');
+                // Altera o ícone do menu
+                if (navMenu.classList.contains('active')) {
+                    menuToggle.classList.remove('fa-bars');
+                    menuToggle.classList.add('fa-times');
+                } else {
+                    menuToggle.classList.remove('fa-times');
+                    menuToggle.classList.add('fa-bars');
+                }
+            });
+        }
+        
+        // Fecha o menu ao clicar em um link
+        document.querySelectorAll('.nav-menu a').forEach(link => {
+            link.addEventListener('click', () => {
+                if(navMenu.classList.contains('active')){
+                    navMenu.classList.remove('active');
+                    menuToggle.classList.remove('fa-times');
+                    menuToggle.classList.add('fa-bars');
+                }
+            });
+        });
+
+        // ======================= //
+        // HEADER COM SCROLL       //
+        // ======================= //
+        const header = document.getElementById('header');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+
+        // ======================= //
+        // ANIMAÇÃO DE FADE-IN     //
+        // ======================= //
+        const faders = document.querySelectorAll('.fade-in');
+        const appearOptions = {
+            threshold: 0.2,
+            rootMargin: "0px 0px -50px 0px"
+        };
+        const appearOnScroll = new IntersectionObserver(function(entries, appearOnScroll) {
+            entries.forEach(entry => {
+                if (!entry.isIntersecting) {
+                    return;
+                } else {
+                    entry.target.classList.add('visible');
+                    appearOnScroll.unobserve(entry.target);
+                }
+            });
+        }, appearOptions);
+
+        faders.forEach(fader => {
+            appearOnScroll.observe(fader);
+        });
+
+        // ======================= //
+        // CARROSSEL DE DEPOIMENTOS//
+        // ======================= //
+        const track = document.querySelector('.carousel-track');
+        if(track){
+            const slides = Array.from(track.children);
+            const dotsNav = document.querySelector('.carousel-dots');
+            const slideWidth = slides[0].getBoundingClientRect().width;
+            let currentSlide = 0;
+
+            // Cria os pontinhos de navegação
+            slides.forEach((slide, index) => {
+                const dot = document.createElement('button');
+                dot.classList.add('dot');
+                if (index === 0) dot.classList.add('active');
+                dotsNav.appendChild(dot);
+                
+                dot.addEventListener('click', e => {
+                    currentSlide = index;
+                    updateCarousel();
+                });
+            });
+            const dots = Array.from(dotsNav.children);
+
+            const updateCarousel = () => {
+                track.style.transform = 'translateX(-' + slideWidth * currentSlide + 'px)';
+                dots.forEach(dot => dot.classList.remove('active'));
+                dots[currentSlide].classList.add('active');
+            }
+            
+            const moveToNextSlide = () => {
+                currentSlide = (currentSlide + 1) % slides.length;
+                updateCarousel();
+            }
+
+            setInterval(moveToNextSlide, 5000); // Muda a cada 5 segundos
+        }
+
+        // ======================= //
+        // LÓGICA DO BOT RÔ (CHAT) //
+        // ======================= //
+        const botIcon = document.getElementById('bot-ro-icon');
+        const chatWindow = document.getElementById('bot-ro-chat-window');
+        const chatMessages = document.getElementById('chat-messages');
+        const chatOptions = document.getElementById('chat-options');
+
+        const initialBotMessage = "Olá! Sou o Bot Rô, da Rotas TV. Como posso te ajudar?";
+
+        function addBotMessage(message, delay = 0) {
+            setTimeout(() => {
+                const messageDiv = document.createElement('div');
+                messageDiv.className = 'message bot';
+                messageDiv.innerHTML = `<div class="text">${message}</div>`;
+                chatMessages.appendChild(messageDiv);
+                chatMessages.scrollTop = chatMessages.scrollHeight; // Auto-scroll
+            }, delay);
+        }
+
+        function showInitialOptions() {
+            chatOptions.innerHTML = `
+                <button class="chat-option-btn" data-type="vendas">Quero contratar</button>
+                <button class="chat-option-btn" data-type="suporte">Preciso de suporte</button>
+            `;
+
+            document.querySelector('.chat-option-btn[data-type="vendas"]').addEventListener('click', handleVendasClick);
+            document.querySelector('.chat-option-btn[data-type="suporte"]').addEventListener('click', handleSuporteClick);
+        }
+
+        function handleVendasClick() {
+            addBotMessage("Ótima escolha! Vou te redirecionar para um de nossos especialistas para finalizar sua contratação.");
+            chatOptions.innerHTML = '';
+            setTimeout(() => {
+                // LINK WHATSAPP VENDAS
+                window.open('https://wa.me/5522999604359', '_blank');
+                closeChat();
+            }, 2000);
+        }
+
+        function handleSuporteClick() {
+            addBotMessage("Entendido. Para um atendimento mais rápido, vou te direcionar ao nosso suporte técnico.");
+            chatOptions.innerHTML = '';
+            setTimeout(() => {
+                // LINK WHATSAPP SUPORTE
+                window.open('https://wa.me/5522999604359', '_blank');
+                closeChat();
+            }, 2000);
+        }
+        
+        function openChat() {
+            chatWindow.classList.add('open');
+            botIcon.innerHTML = `<i class="fas fa-times"></i>`; // Muda para ícone de fechar
+            
+            // Resetar e iniciar conversa
+            chatMessages.innerHTML = '';
+            chatOptions.innerHTML = '';
+            addBotMessage(initialBotMessage, 500);
+            setTimeout(showInitialOptions, 1500);
+        }
+
+        function closeChat() {
+            chatWindow.classList.remove('open');
+            botIcon.innerHTML = `<i class="fas fa-robot"></i>`; // Volta para ícone do robô
+        }
+
+        botIcon.addEventListener('click', (e) => {
+            e.stopPropagation();
+            if (chatWindow.classList.contains('open')) {
+                closeChat();
+            } else {
+                openChat();
+            }
+        });
+        
+        // Fecha o chat se clicar fora
+        document.addEventListener('click', (e) => {
+            if (!chatWindow.contains(e.target) && !botIcon.contains(e.target)) {
+                 if (chatWindow.classList.contains('open')) {
+                    closeChat();
+                }
+            }
+        });
+
+    });
+    </script>
+
+</body>
+</html>
